@@ -8,8 +8,6 @@ from app.services.rag import RAGService
 
 router = APIRouter(tags=["Upload"])
 
-rag_service = RAGService()
-
 
 @router.post("/upload")
 async def upload_documents(
@@ -37,6 +35,9 @@ async def upload_documents(
             shutil.copyfileobj(file.file, buffer)
 
         saved_files.append(file_path)
+
+    # Lazy initialization (creates RAG service only when upload API is called)
+    rag_service = RAGService()
 
     total_chunks = rag_service.index_documents(saved_files)
 

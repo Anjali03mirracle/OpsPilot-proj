@@ -5,11 +5,10 @@ from app.services.rag import RAGService
 
 router = APIRouter(tags=["Chat"])
 
-rag_service = RAGService()
-
 
 @router.post("/chat")
 async def chat(request: ChatRequest):
+    rag_service = RAGService()
     return rag_service.ask(question=request.question)
 
 

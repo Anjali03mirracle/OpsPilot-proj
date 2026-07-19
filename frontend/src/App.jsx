@@ -1,36 +1,40 @@
 import { useState } from "react";
-
-import Upload from "./components/Upload";
 import Sidebar from "./components/Sidebar";
+import Upload from "./components/Upload";
 import Chat from "./components/Chat";
 
 function App() {
   const [documents, setDocuments] = useState([]);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        height: "100vh",
-        background: "#f5f5f5",
-      }}
-    >
-      <Sidebar documents={documents} />
+    <div className="flex h-screen bg-slate-950 text-slate-100">
+      {/* Sidebar */}
+      <aside className="w-72 border-r border-slate-800 bg-slate-900">
+        <Sidebar documents={documents} />
+      </aside>
 
-      <div
-        style={{
-          flex: 1,
-          padding: "20px",
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        <h1>🚀 OpsPilot</h1>
+      {/* Main Content */}
+      <main className="flex flex-1 flex-col overflow-hidden">
+        {/* Header */}
+        <header className="border-b border-slate-800 bg-slate-900/60 px-8 py-5 backdrop-blur">
+          <h1 className="text-3xl font-bold tracking-tight">
+            🚀 OpsPilot
+          </h1>
 
-        <Upload setDocuments={setDocuments} />
+          <p className="mt-1 text-sm text-slate-400">
+            AI-powered Document Intelligence Assistant
+          </p>
+        </header>
 
-        <Chat />
-      </div>
+        {/* Body */}
+        <div className="flex flex-1 flex-col gap-6 overflow-hidden p-8">
+          <Upload setDocuments={setDocuments} />
+
+          <div className="flex-1 overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-xl">
+            <Chat />
+          </div>
+        </div>
+      </main>
     </div>
   );
 }

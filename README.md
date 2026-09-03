@@ -224,11 +224,3 @@ With one additional week, the following improvements would be implemented:
 
 ---
 
-# Screenshots
-
-(Add screenshots after deployment.)
-
-- Home Page
-- PDF Upload
-- Chat Interface
-- Multi-document Query

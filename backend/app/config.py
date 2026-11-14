@@ -1,35 +1,60 @@
-from pathlib import Path
-
+# pyrefly: ignore [missing-import]
 from pydantic_settings import BaseSettings, SettingsConfigDict
-
-# Backend directory
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
-
-# Folders
-UPLOAD_DIR = BASE_DIR / "uploads"
-VECTOR_DB_DIR = BASE_DIR / "vector_db"
+from functools import lru_cache
 
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=".env",
+        env_file_encoding="utf-8",
+        case_sensitive=False,
         extra="ignore",
     )
 
-    # RAG Settings
-    CHUNK_SIZE: int = 800
-    CHUNK_OVERLAP: int = 150
+    # App
+    app_env: str = "development"
+    log_level: str = "INFO"
 
-    # Embedding Model
-    EMBEDDING_MODEL: str = "sentence-transformers/all-MiniLM-L6-v2"
+    # CORS
+    frontend_url: str = "http://localhost:5173"
+
+    # Supabase
+    supabase_url: str
+    supabase_service_key: str
+    supabase_bucket_name: str = "pdfs"
+
+    # Qdrant
+    qdrant_url: str
+    qdrant_api_key: str
+    qdrant_collection_name: str = "opspilot_chunks"
+
+    # Gemini Embeddings
+    gemini_api_key: str
+    embedding_model: str = "gemini-embedding-001"
+    embedding_dimensions: int = 768
+    embedding_batch_size: int = 20
 
     # Groq
-    GROQ_API_KEY: str = ""
-    LLM_MODEL: str = "llama-3.3-70b-versatile"
+    groq_api_key: str
+    groq_model: str = "openai/gpt-oss-120b"
+    groq_max_tokens: int = 1024
+    groq_temperature: float = 0.1
+
+    # Upload limits
+    max_file_size_mb: int = 20
+    max_files_per_upload: int = 5
+
+    # RAG
+    chunk_size: int = 800
+    chunk_overlap: int = 150
+    retrieval_top_k: int = 5
+    conversation_history_limit: int = 10
+
+    @property
+    def max_file_size_bytes(self) -> int:
+        return self.max_file_size_mb * 1024 * 1024
 
 
-settings = Settings()
-
-# Create required folders
-UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
-VECTOR_DB_DIR.mkdir(parents=True, exist_ok=True)
+@lru_cache()
+def get_settings() -> Settings:
+    return Settings()

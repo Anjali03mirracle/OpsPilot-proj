@@ -1,26 +1,12 @@
-# Python
-venv/
 __pycache__/
-*.pyc
-
-# Environment
-backend/.env
+*.py[cod]
+*.pyo
 .env
-
-# Generated data
-uploads/
-vector_db/
-backend/uploads/
-backend/vector_db/
-
-# Frontend
-frontend/node_modules/
-frontend/dist/
-
-# IDE
-.vscode/
-.idea/
-
-# OS
-.DS_Store
-Thumbs.db
+venv/
+.venv/
+env/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
